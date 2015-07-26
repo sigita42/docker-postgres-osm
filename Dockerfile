@@ -7,7 +7,11 @@ MAINTAINER James Badger <james@jamesbadger.ca>
 ENV DEBIAN_FRONTEND noninteractive
 ENV PG_MAJOR 9.4
 
-RUN apt-get update && apt-get install -y -q postgresql-${PG_MAJOR}-postgis-2.1 postgresql-contrib postgresql-server-dev-${PG_MAJOR}
+RUN apt-get update && \
+    apt-get install -y -q postgresql-${PG_MAJOR}-postgis-2.1 \
+                          postgresql-contrib \
+                          postgresql-server-dev-${PG_MAJOR} && \
+    rm -rf /var/lib/apt/lists/*
 
 ENV OSM_USER osm
 ENV OSM_DB gis

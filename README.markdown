@@ -1,22 +1,24 @@
 # docker-postgres-osm
 
+> Based on https://github.com/openfirmware/docker-postgres-osm
+
 The base postgres image from Docker with extensions for importing OpenStreetMap data.
 
 ## Build Instructions
 
 Can be built from the Dockerfile:
 
-    # docker build -t openfirmware/postgres-osm github.com/openfirmware/docker-postgres-osm.git
+    # docker build -t sigita42/postgres-osm github.com/sigita42/docker-postgres-osm.git
 
 ## Running Postgres
 
 Build the image:
 
-    # docker build -t openfirmware/postgres-osm .
+    # docker build -t sigita42/postgres-osm .
 
 Then launch the container:
 
-    # docker run -d --name postgres-osm openfirmware/postgres-osm
+    # docker run -d --name postgres-osm sigita42/postgres-osm
 
 Then test with `postgresql-client`:
 
@@ -28,7 +30,7 @@ This will use Docker's container links to connect to Postgresql without having P
 
 By default, the database created will be called `gis` and be owned by user `osm`. These can be changed with environment variables in the RUN command:
 
-    # docker run -d --name postgres-osm -e "OSM_USER=www-data" -e "OSM_DB=osm_dataset" openfirmware/postgres-osm
+    # docker run -d --name postgres-osm -e "OSM_USER=www-data" -e "OSM_DB=osm_dataset" sigita42/postgres-osm
 
 These variables can be accessed from linked containers. Consider the link alias `pg`:
 

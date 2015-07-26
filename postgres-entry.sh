@@ -1,14 +1,17 @@
 #!/bin/bash
 set -e
 
+echo "CREATE USER '$OSM_USER';"
 gosu postgres postgres --single -jE <<-EOL
   CREATE USER "$OSM_USER";
 EOL
 
+echo "CREATE DATABASE '$OSM_DB';"
 gosu postgres postgres --single -jE <<-EOL
   CREATE DATABASE "$OSM_DB";
 EOL
 
+echo "GRANT ALL ON DATABASE '$OSM_DB' TO '$OSM_USER';"
 gosu postgres postgres --single -jE <<-EOL
   GRANT ALL ON DATABASE "$OSM_DB" TO "$OSM_USER";
 EOL
@@ -18,11 +21,16 @@ EOL
 # updating the DB, then shutting down the server so the
 # rest of the docker-postgres init scripts can finish.
 
+echo "Starting postrges ..."
 gosu postgres pg_ctl -w start
+
+echo "CREATE EXTENSION postgis, hstore + ALTER TABLEs"
 gosu postgres psql "$OSM_DB" <<-EOL
   CREATE EXTENSION postgis;
   CREATE EXTENSION hstore;
   ALTER TABLE geometry_columns OWNER TO "$OSM_USER";
   ALTER TABLE spatial_ref_sys OWNER TO "$OSM_USER";
 EOL
+
+echo "Stopping postgres ..."
 gosu postgres pg_ctl stop
